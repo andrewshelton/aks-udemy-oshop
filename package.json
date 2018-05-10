@@ -22,8 +22,11 @@
     "@angular/router": "5.0.5",
     "@firebase/app": "^0.1.6",
     "angularfire2": "^5.0.0-rc.7",
+    "bootstrap": "^4.1.1",
     "core-js": "^2.5.4",
     "firebase": "5.0.1",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.3",
     "rxjs": "5.5.4",
     "zone.js": "0.8.26"
   },
