@@ -5,12 +5,12 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyA2u8zLv4_UvAwYhAW4tMe8Ovws5TgPVso',
-    authDomain: 'aks-udemy-shop.firebaseapp.com',
-    databaseURL: 'https://aks-udemy-shop.firebaseio.com',
-    projectId: 'aks-udemy-shop',
-    storageBucket: 'aks-udemy-shop.appspot.com',
-    messagingSenderId: '432022531922'
+    apiKey: 'AIzaSyA81UBnNw8kiAcougZVUrZuBqSqotvwOt0',
+    authDomain: 'aks-oshop.firebaseapp.com',
+    databaseURL: 'https://aks-oshop.firebaseio.com',
+    projectId: 'aks-oshop',
+    storageBucket: '',
+    messagingSenderId: '1051018032117'
   }
 };
 
