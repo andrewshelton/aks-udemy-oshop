@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ExtraOptions } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
@@ -31,6 +31,11 @@ import { ProductService } from './services/product/product.service';
 import { ProductFilterComponent } from './products/product-filter/product-filter.component';
 import { ProductCardComponent } from './product-card/product-card.component';
 import { ShoppingCartService } from './services/shopping-cart/shopping-cart.service';
+import { ProductQuantityComponent } from './product-quantity/product-quantity.component';
+
+const routerOptions: ExtraOptions = {
+  onSameUrlNavigation: 'reload'
+};
 
 @NgModule({
   declarations: [
@@ -47,7 +52,8 @@ import { ShoppingCartService } from './services/shopping-cart/shopping-cart.serv
     LoginComponent,
     ProductFormComponent,
     ProductFilterComponent,
-    ProductCardComponent
+    ProductCardComponent,
+    ProductQuantityComponent
   ],
   imports: [
     BrowserModule,
@@ -88,7 +94,9 @@ import { ShoppingCartService } from './services/shopping-cart/shopping-cart.serv
         component: AdminOrdersComponent,
         canActivate: [AuthGuard, AdminAuthGuard]
       }
-    ])
+    ],
+    routerOptions
+  )
   ],
   providers: [
     AuthService,

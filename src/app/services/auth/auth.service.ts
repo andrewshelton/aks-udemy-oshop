@@ -35,8 +35,10 @@ export class AuthService {
   logout() {
     this.afAuth.auth.signOut()
       .then(success => {
+        console.log('pre-logout url: ', this.router.url);
         localStorage.clear();
         this.router.navigate(['/']);
+        console.log('post-logout url: ', this.router.url);
       })
       .catch(err => {
         console.log('Logout Redirect Error: ', err);

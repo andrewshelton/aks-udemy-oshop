@@ -1,0 +1,14 @@
+.sc-quantity-col-header {
+  width: 230px;
+}
+
+.sc-price-col-header {
+  width: 200px;
+}
+
+.thumbnail {
+  height: 80px;
+  width: 80px;
+  border-radius: 100%;
+  background-size: cover;
+}

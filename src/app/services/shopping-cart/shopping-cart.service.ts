@@ -3,12 +3,31 @@ import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { Product } from '../../models/product';
 import 'rxjs/add/operator/take';
 import { Observable } from 'rxjs/Observable';
-import { ShoppingCart } from '../../models/shopping-cart';
+import { ShoppingCart, ShoppingCartDTO } from '../../models/shopping-cart';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class ShoppingCartService {
 
   constructor(private db: AngularFireDatabase) { }
+
+  public async getCart(): Promise<AngularFireObject<ShoppingCartDTO>> {
+    const cartId = await this.getOrCreateCartId();
+    return this.db.object('/shopping-carts/' + cartId);
+  }
+
+  public async addToCart(product: Product) {
+    this.updateProductQuantity(product, 1);
+  }
+
+  public async removeFromCart(product: Product) {
+    this.updateProductQuantity(product, -1);
+  }
+
+  public async clearCart() {
+    const cartId = await this.getOrCreateCartId();
+    this.db.object('/shopping-carts/' + cartId + '/items').remove();
+  }
 
   private createCart() {
     return this.db.list('/shopping-carts').push({
@@ -31,19 +50,6 @@ export class ShoppingCartService {
     return this.db.object('/shopping-carts/' + cartId + '/items/' + productId);
   }
 
-  public async getCart(): Promise<AngularFireObject<ShoppingCart>> {
-    const cartId = await this.getOrCreateCartId();
-    return this.db.object('/shopping-carts/' + cartId);
-  }
-
-  public async addToCart(product: Product) {
-    this.updateProductQuantity(product, 1);
-  }
-
-  public async removeFromCart(product: Product) {
-    this.updateProductQuantity(product, -1);
-  }
-
   private async updateProductQuantity(product: Product, delta: number) {
     const cartId = await this.getOrCreateCartId();
     const item$ = this.getProduct(cartId, product.key);
@@ -58,10 +64,12 @@ export class ShoppingCartService {
         quantity = prod.quantity + delta;
       }
 
-      quantity = (quantity > 0) ? quantity : 0;
-      payload['quantity'] = quantity;
-
-      item$.update(payload);
+      if (quantity <= 0) {
+        item$.remove();
+      } else {
+        payload['quantity'] = quantity;
+        item$.update(payload);
+      }
     });
   }
 }

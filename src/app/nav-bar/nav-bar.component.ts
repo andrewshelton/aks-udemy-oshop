@@ -11,6 +11,7 @@ import { ShoppingCart } from '../models/shopping-cart';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
+  private sub: Subscription;
   appUser: AppUser;
   shoppingCart: ShoppingCart;
 
@@ -24,25 +25,12 @@ export class NavBarComponent implements OnInit {
   ) {  }
 
   async ngOnInit() {
-    this.shoppingCart = {
-      itemCount: 0,
-      items: []
-    };
-
     this.auth.appUser$.subscribe(appUser => this.appUser = appUser);
 
-    this.shoppingCartService.getCart().then( cart => {
-      cart.valueChanges().subscribe(cart$ => {
-        this.shoppingCart.key = cart$.key;
-        this.shoppingCart.itemCount = 0;
-
-        const payload = {...cart$.items};
-        const productKeys = Object.keys(payload);
-
-        productKeys.forEach((key) => {
-          this.shoppingCart.itemCount += payload[key].quantity || 0;
-          this.shoppingCart.items.push(payload[key]);
-        });
+    await this.shoppingCartService.getCart().then(cart => {
+      const cart$ = cart.valueChanges();
+      this.sub = cart$.subscribe(cartSub => {
+        this.shoppingCart = new ShoppingCart(cartSub);
       });
     });
   }
